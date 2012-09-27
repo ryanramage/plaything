@@ -1,0 +1,30 @@
+.holder {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #CCC;
+    margin: 0 auto 40px;
+    perspective: 400px;
+}
+
+.box {
+    border: 1px solid green;
+    margin: 20px;
+    transform:  rotateX( 45deg ) translateZ(20px);
+    animation-name: wave;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+    animation-timing-function: ease-in-out;
+
+
+}
+
+@keyframes wave {
+    from {
+        transform:  rotateX( 0deg ) translateZ(0px);
+    }
+    to {
+        transform:  rotateX( 45deg ) translateZ(20px);
+
+    }
+}
