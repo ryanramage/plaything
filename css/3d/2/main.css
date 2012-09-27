@@ -19,6 +19,8 @@ body {
     height: 100%;
     position: absolute;
     transform-style: preserve-3d;
+    border: 1px solid #888;
+    border-radius: 5px;
 
 
 }
@@ -31,8 +33,9 @@ body {
     color: white;
     text-align: center;
     font-weight: bold;
-    font-size: 100px;
+    font-size: 60px;
     position: absolute;
+    border-radius: 5px;
     backface-visibility: hidden;
     margin: 0; /* had to add because of twitter bootstrap has a card class */
 }
