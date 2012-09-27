@@ -23,7 +23,13 @@
 
           $(function(){
               $('.card').on('click', function(){
-                 $(this).toggleClass('flipped');
+                  var $me = $(this);
+                  if (!$me.hasClass('flipped')) {
+                      $me.addClass('flipped').removeClass('flipped-back');;
+                  } else {
+                     $me.addClass('flipped-back').removeClass('flipped');
+                  }
+
               });
           })
       </script>

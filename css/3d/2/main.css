@@ -1,26 +1,32 @@
+body {
+    /*background-image: url("http://colourlovers.com.s3.amazonaws.com/images/patterns/2789/2789582.png");*/
+    background-image: url("wood_pattern.png");
+    background-repeat: repeat;
+
+}
+
 .holder {
 
     width: 250px;
     height: 150px;
     position: relative;
     margin: 0 auto 40px;
-
-  perspective: 800px;
+    perspective: 800px;
 }
 
 .card {
     width: 100%;
-        height: 100%;
+    height: 100%;
     position: absolute;
     transform-style: preserve-3d;
-    transition: transform 1s;
+
 
 }
 
 .card figure {
     display: block;
-    width:  100%;
-        height:  100%;
+    width: 100%;
+    height: 100%;
     line-height: 150px;
     color: white;
     text-align: center;
@@ -32,13 +38,48 @@
 }
 
 .card .front {
-  background: red;
+    background: red;
 }
+
 .card .back {
-  background: blue;
-  transform: rotateY( 180deg );
+    background: blue;
+    transform: rotateY(180deg);
 }
 
 .card.flipped {
-  transform: rotateY( 180deg );
+    transform: rotateY(180deg);
+    animation-duration: 1s;
+    animation-direction: forward;
+    animation-name: flip;
+}
+
+.card.flipped-back {
+
+
+    animation-duration: 1s;
+    animation-direction: reverse;
+    animation-name: flip;
+}
+
+
+@keyframes flip {
+    0% {
+        transform: translateZ(0px) rotateX( 0deg );
+        animation-timing-function: ease-in;
+
+    }
+    20% {
+        transform: translateZ(150px) rotateY(5deg) rotateZ(2deg);
+        animation-timing-function: ease-in-out;
+        box-shadow: 0px 20px 30px rgba(90, 90, 90, .3);
+    }
+    80% {
+        transform: translateZ(180px) rotateY(170deg) rotateZ(-2deg);;
+        animation-timing-function: linear;
+        box-shadow: 10px 40px 40px rgba(90, 90, 90, .3);
+    }
+    100% {
+        transform: translateZ(0px) rotateY(180deg);
+
+    }
 }
