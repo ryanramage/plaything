@@ -10,8 +10,21 @@ svg {
   shape-rendering: crispEdges;
 }
 
-rect {
-  fill: #ddd;
+rect.bg {
+  fill: #efefef;
+}
+
+rect.tag {
+  fill: steelblue;
+    fill: green;
+    stroke: #fff;
+    fill-opacity: .125;
+}
+
+.brush .extent {
+  stroke: #fff;
+  fill-opacity: .125;
+  shape-rendering: crispEdges;
 }
 
 .axis path, .axis line {
@@ -22,6 +35,12 @@ rect {
 </style>
 <body>
 <script>
+
+var data = [
+    { start: new Date(2011, 01,01), end: new Date(2011,01,02)},
+    { start: new Date(2011, 01,03), end: new Date(2011,01,04)},
+];
+
 
 var margin = {top: 0, right: 0, bottom: 12, left: 24},
     width = 960 - margin.left - margin.right,
@@ -49,22 +68,23 @@ var yAxis = d3.svg.axis()
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     .call(d3.behavior.zoom().x(x).scaleExtent([0.5, 125000000]).on("zoom", zoom));
 
+svg.append("defs")
+    .append("clipPath")
+    .attr("id", "clip")
+
 svg.append("rect")
+    .attr("class", "bg")
     .attr("width", width)
     .attr("height", height);
 
-svg.append("g")
-    .attr("class", "x axis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(xAxis);
+var tags =  svg.append("g")
+    //.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
-svg.append("g")
-    .attr("class", "y axis")
-    .call(yAxis);
+
+
+/** The scrubber **/
 
 svg.append('line')
         .attr("x1", width/2 - 1)
@@ -74,14 +94,83 @@ svg.append('line')
         .style("stroke", "rgb(6,120,155)");
 
 
+/*
+var tag_area = d3.svg.area()
+
+        .x1(function(d) { return x(d.start);   })
+        .x0(function(d) { return x(d.end);  })
+        .y1(20)
+        .y0(150);
+
+*/
+
+
+
+
+tags.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+
+tags.append("g")
+    .attr("class", "y axis")
+    .call(yAxis);
+
+
+
+
+var tag_space = tags.append("g").attr("clip-path", "url(#clip)");
+
+tag_space.selectAll("rect")
+.data(data)
+.enter().append("rect")
+.attr("class", "tag")
+    .attr("x", function(d) {  return x(d.start); })
+    .attr("y", 20)
+    .attr("height",50)
+    .attr("width", function(d) {  return x(d.end) - x(d.start); })
+    .attr("fill", "#2d578b");
+
+
+
+
+
 
 function zoom() {
-  svg.select(".x.axis").call(xAxis);
-  svg.select(".y.axis").call(yAxis);
-  var range = x.domain();
-  var scrubber_date = new Date( d3.mean(range, function(d){ return d.getTime()  }));
 
-    console.log( scrubber_date, scrubber_date.getTime())
+    tags.select(".x.axis").call(xAxis);
+    tags.select(".y.axis").call(yAxis);
+
+
+    var range = x.domain();
+    var scrubber_date = new Date( d3.mean(range, function(d){ return d.getTime()  }));
+
+    tag_space.selectAll("rect").attr("x", function(d) {  return x(d.start); }).attr("width", function(d) {  return x(d.end) - x(d.start); });
 }
+
+
+/*
+ ---- disable the brush for now.
+
+svg.append("g")
+    .attr("class", "brush")
+    .call(d3.svg.brush().x(x).y(y)
+    .on("brushstart", brushstart)
+    .on("brush", brushmove)
+    .on("brushend", brushend));
+
+function brushstart() {
+  svg.classed("selecting", true);
+}
+
+function brushmove() {
+  var e = d3.event.target.extent();
+
+}
+
+function brushend() {
+  svg.classed("selecting", !d3.event.target.empty());
+}
+*/
 
 </script>
