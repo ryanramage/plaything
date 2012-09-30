@@ -41,6 +41,22 @@ var data = [
     { start: new Date(2011, 01,03), end: new Date(2011,01,04)},
 ];
 
+var images = [
+    {
+        start: new Date(2011, 01,01), end: new Date(2011,01,02),
+        url: 'http://svg-edit.googlecode.com/svn/branches/2.5.1/editor/images/logo.png',
+        width: 37, height: 59
+    }
+]
+
+var journals = [
+    {
+        day: new Date(2011, 01,01),
+        entry : "Today was good, I had some pizza<br/>and pie!"
+    }
+
+]
+
 
 var margin = {top: 0, right: 0, bottom: 12, left: 24},
     width = 960 - margin.left - margin.right,
@@ -135,7 +151,37 @@ tag_space.selectAll("rect")
     .attr("fill", "#2d578b");
 
 
+var scrapbook_space = tags.append("g").attr("clip-path", "url(#clip)");
 
+var sc_width = function(d) {
+    var date_width =  x(d.end) - x(d.start);
+    var img_width = d.width;
+    if(img_width < date_width) return img_width;
+    return date_width;
+}
+
+
+scrapbook_space.selectAll('image')
+        .data(images)
+        .enter().append('image')
+        .attr('class', 'scrap')
+        .attr('x', function(d) {  return x(d.start); })
+        .attr('y', 150)
+        .attr('width', sc_width)
+        .attr('height', function(d) {return d.height })
+        .attr('xlink:href', function(d) {return d.url})
+
+
+var journal_space = tags.append("g").attr("clip-path", "url(#clip)");
+
+journal_space.selectAll('div')
+        .data(journals)
+        .enter().append('div')
+        .attr('x', function(d) {  return x(d.day); })
+        .attr('y', 250)
+        .attr('width', 100)
+        .attr('height',100)
+        .innerHTML('adhjdsjadsak')
 
 
 
@@ -149,6 +195,8 @@ function zoom() {
     var scrubber_date = new Date( d3.mean(range, function(d){ return d.getTime()  }));
 
     tag_space.selectAll("rect").attr("x", function(d) {  return x(d.start); }).attr("width", function(d) {  return x(d.end) - x(d.start); });
+    scrapbook_space.selectAll('image').attr("x", function(d) {  return x(d.start); }).attr("width", sc_width);
+
 }
 
 
