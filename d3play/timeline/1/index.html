@@ -83,10 +83,12 @@ var yAxis = d3.svg.axis()
     .ticks(0)
     .tickSize(-width);
 
+var x_zoom = d3.behavior.zoom();
+
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-    .call(d3.behavior.zoom().x(x).scaleExtent([0.5, 125000000]).on("zoom", zoom));
+    .call(x_zoom.x(x).scaleExtent([0.5, 125000000]).on("zoom", zoom));
 
 svg.append("defs")
     .append("clipPath")
@@ -180,11 +182,12 @@ scrapbook_space.selectAll('image')
 
 function zoom() {
 
+    var range = x.domain();
+
+
     tags.select(".x.axis").call(xAxis);
     tags.select(".y.axis").call(yAxis);
 
-
-    var range = x.domain();
     var scrubber_date = new Date( d3.mean(range, function(d){ return d.getTime()  }));
 
     tag_space.selectAll("rect").attr("x", function(d) {  return x(d.start); }).attr("width", function(d) {  return x(d.end) - x(d.start); });
@@ -203,7 +206,7 @@ scales.month = scales.day * 31;
 scales.year = scales.month * 12;
 scales.multi_year = scales.year * 100;
 
-console.log(scales);
+
 
 function getMeanDate(domain) {
  return new Date( d3.mean(domain, function(d){ return d.getTime()  }))
@@ -219,6 +222,16 @@ function getScale(domain) {
 	if (duration <= scales.month) return scales.month;
 	if (duration <= scales.year) return scales.year;
 	return scales.multi_year;
+}
+
+function getScaleExtent(scale) {
+    if (scale <= scales.minute) return [0, 1];
+   	if (scale <= scales.hour) return [0, 1];
+   	if (scale <= scales.day) return [0, 1];
+   	if (scale <= scales.week) return [0, 1];
+   	if (scale <= scales.month) return [0, 1];
+   	if (scale <= scales.year) return [0, 1];
+   	return [0.5, 125000000];
 }
 
 
@@ -244,9 +257,10 @@ function zoomOutSingleToScale(middle_date, from_scale)  {
 
 }
 
-function redrawToDates(left_date, right_date) {
+function redrawToDates(left_date, right_date, scale_extent) {
     x.domain([left_date, right_date]);
     zoom();
+    x_zoom.x(x);//.scaleExtent(scale_extent);
 }
 
 
@@ -254,7 +268,8 @@ function zoomButton(middle_date, to_scale) {
     var x = to_scale/2;
     var left_date = new Date(middle_date.getTime() - x);
     var right_date = new Date(middle_date.getTime() + x);
-    redrawToDates(left_date, right_date);
+    var scale_extent = getScaleExtent(to_scale);
+    redrawToDates(left_date, right_date, scale_extent);
 }
 
 
