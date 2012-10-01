@@ -5,6 +5,8 @@
 <script src="../../../js/d3.v2.min.js"></script>
 <script src="../../../js/jquery-1.8.2.min.js"></script>
 <script src="../../../js/moment.min.js"></script>
+<script src="../../../js/soundmanager/script/soundmanager2.js"></script>
+<script src="../../../js/jwerty.js"></script>
 <style>
 
 svg {
@@ -319,6 +321,18 @@ function brushend() {
   svg.classed("selecting", !d3.event.target.empty());
 }
 */
+
+soundManager.setup({
+  url: '../../../js/soundmanager/swf/',
+  flashVersion: 9, // optional: shiny features (default = 8)
+  useFlashBlock: false,
+  onready: function() {
+    // Ready to use; soundManager.createSound() etc. can now be called.
+  }
+});
+
+
+
 
 </script>
 
