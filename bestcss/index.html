@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to the party</title>
+</head>
+<body>
+
+<div class="main">
+    <h2>RED!</h2>
+
+    <div class="box">
+        In a box!
+    </div>
+</div>
+
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="jam/require.js"></script>
+<script>
+  require(['js/app', 'domReady'], function (app, domReady) {
+    app.init(function(){
+        domReady(app.on_dom_ready);
+    });
+  });
+</script>
+</body>
+</html>

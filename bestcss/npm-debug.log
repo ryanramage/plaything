@@ -1,0 +1,148 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install', 'requirejs' ]
+2 info using npm@1.1.48
+3 info using node@v0.8.6
+4 verbose config file /Users/ryan/.npmrc
+5 verbose config file /usr/local/etc/npmrc
+6 verbose config file /usr/local/lib/node_modules/npm/npmrc
+7 verbose read json /Users/ryan/package.json
+8 verbose read json /Users/ryan/node_modules/assert/package.json
+9 verbose read json /Users/ryan/node_modules/browserify/package.json
+10 verbose read json /Users/ryan/node_modules/express/package.json
+11 verbose read json /Users/ryan/node_modules/grunt-contrib-copy/package.json
+12 verbose read json /Users/ryan/node_modules/grunt-contrib-less/package.json
+13 verbose read json /Users/ryan/node_modules/grunt-couchapp/package.json
+14 verbose read json /Users/ryan/node_modules/levelup/package.json
+15 verbose read json /Users/ryan/node_modules/nano/package.json
+16 verbose read json /Users/ryan/node_modules/pouchdb/package.json
+17 verbose read json /Users/ryan/node_modules/qunit/package.json
+18 verbose read json /Users/ryan/node_modules/read-dir-files/package.json
+19 verbose read json /Users/ryan/node_modules/request/package.json
+20 verbose read json /Users/ryan/node_modules/rewriter/package.json
+21 verbose read json /Users/ryan/node_modules/soda/package.json
+22 verbose read json /Users/ryan/node_modules/tako/package.json
+23 verbose read json /Users/ryan/node_modules/underscore/package.json
+24 warn package.json assert@0.4.9 No README.md file found!
+25 verbose read json /Users/ryan/package.json
+26 verbose cache add [ 'requirejs', null ]
+27 silly cache add name=undefined spec="requirejs" args=["requirejs",null]
+28 verbose parsed url { pathname: 'requirejs', path: 'requirejs', href: 'requirejs' }
+29 silly lockFile f2b16c35-requirejs requirejs
+30 verbose lock requirejs /Users/ryan/.npm/f2b16c35-requirejs.lock
+31 silly lockFile f2b16c35-requirejs requirejs
+32 verbose addNamed [ 'requirejs', '' ]
+33 verbose addNamed [ null, '' ]
+34 silly lockFile e9b02655-requirejs requirejs@
+35 verbose lock requirejs@ /Users/ryan/.npm/e9b02655-requirejs.lock
+36 silly addNameRange { name: 'requirejs', range: '', hasData: false }
+37 verbose url raw requirejs
+38 verbose url resolving [ 'https://registry.npmjs.org/', './requirejs' ]
+39 verbose url resolved https://registry.npmjs.org/requirejs
+40 info retry registry request attempt 1 at 15:04:49
+41 verbose etag "A3DMK8WHYWGY5MFPDHRR0PEUJ"
+42 http GET https://registry.npmjs.org/requirejs
+43 http 200 https://registry.npmjs.org/requirejs
+44 silly registry.get cb [ 200,
+44 silly registry.get   { vary: 'Accept',
+44 silly registry.get     server: 'CouchDB/1.2.0 (Erlang OTP/R15B)',
+44 silly registry.get     etag: '"1JCP76H1PC8X3P0R81RKW9UO8"',
+44 silly registry.get     date: 'Thu, 08 Nov 2012 22:04:34 GMT',
+44 silly registry.get     'content-type': 'application/json',
+44 silly registry.get     'content-length': '22637' } ]
+45 silly addNameRange number 2 { name: 'requirejs', range: '', hasData: true }
+46 silly addNameRange versions [ 'requirejs',
+46 silly addNameRange   [ '0.26.0',
+46 silly addNameRange     '0.27.0',
+46 silly addNameRange     '0.27.1',
+46 silly addNameRange     '1.0.0',
+46 silly addNameRange     '1.0.1',
+46 silly addNameRange     '1.0.2',
+46 silly addNameRange     '1.0.3',
+46 silly addNameRange     '1.0.4',
+46 silly addNameRange     '1.0.5',
+46 silly addNameRange     '1.0.6',
+46 silly addNameRange     '1.0.7',
+46 silly addNameRange     '1.0.8',
+46 silly addNameRange     '2.0.0',
+46 silly addNameRange     '2.0.1',
+46 silly addNameRange     '2.0.2',
+46 silly addNameRange     '2.0.3',
+46 silly addNameRange     '2.0.4',
+46 silly addNameRange     '2.0.5',
+46 silly addNameRange     '2.0.6',
+46 silly addNameRange     '2.1.0',
+46 silly addNameRange     '2.1.1' ] ]
+47 verbose addNamed [ 'requirejs', '2.1.1' ]
+48 verbose addNamed [ '2.1.1', '2.1.1' ]
+49 silly lockFile 0a4a1ad9-requirejs-2-1-1 requirejs@2.1.1
+50 verbose lock requirejs@2.1.1 /Users/ryan/.npm/0a4a1ad9-requirejs-2-1-1.lock
+51 verbose read json /Users/ryan/.npm/requirejs/2.1.1/package/package.json
+52 silly lockFile 0a4a1ad9-requirejs-2-1-1 requirejs@2.1.1
+53 silly lockFile e9b02655-requirejs requirejs@
+54 silly resolved [ { name: 'requirejs',
+54 silly resolved     description: 'Node adapter for RequireJS, for loading AMD modules. Includes RequireJS optimizer',
+54 silly resolved     version: '2.1.1',
+54 silly resolved     homepage: 'http://github.com/jrburke/r.js',
+54 silly resolved     author:
+54 silly resolved      { name: 'James Burke',
+54 silly resolved        email: 'jrburke@gmail.com',
+54 silly resolved        url: 'http://github.com/jrburke' },
+54 silly resolved     licenses: [ [Object], [Object] ],
+54 silly resolved     main: './bin/r.js',
+54 silly resolved     bin: { 'r.js': './bin/r.js' },
+54 silly resolved     engines: { node: '>=0.4.0' },
+54 silly resolved     readme: '# requirejs\n\nRequireJS for use in Node. includes:\n\n* r.js: the RequireJS optimizer, and AMD runtime for use in Node.\n* require.js: The browser-based AMD loader.\n\nMore information at http://requirejs.org\n\n',
+54 silly resolved     _id: 'requirejs@2.1.1',
+54 silly resolved     _from: 'requirejs' } ]
+55 info install requirejs@2.1.1 into /Users/ryan
+56 info installOne requirejs@2.1.1
+57 verbose from cache /Users/ryan/.npm/requirejs/2.1.1/package/package.json
+58 info /Users/ryan/node_modules/requirejs unbuild
+59 verbose read json /Users/ryan/node_modules/requirejs/package.json
+60 verbose tar unpack /Users/ryan/.npm/requirejs/2.1.1/package.tgz
+61 silly lockFile 5e5c04fd-sers-ryan-node-modules-requirejs /Users/ryan/node_modules/requirejs
+62 verbose lock /Users/ryan/node_modules/requirejs /Users/ryan/.npm/5e5c04fd-sers-ryan-node-modules-requirejs.lock
+63 silly gunzTarPerm modes [ '755', '644' ]
+64 silly gunzTarPerm extractEntry package.json
+65 silly gunzTarPerm extractEntry README.md
+66 silly gunzTarPerm extractEntry require.js
+67 silly gunzTarPerm extractEntry bin/r.js
+68 verbose read json /Users/ryan/node_modules/requirejs/package.json
+69 silly lockFile 5e5c04fd-sers-ryan-node-modules-requirejs /Users/ryan/node_modules/requirejs
+70 info preinstall requirejs@2.1.1
+71 verbose from cache /Users/ryan/node_modules/requirejs/package.json
+72 verbose readDependencies using package.json deps
+73 verbose from cache /Users/ryan/node_modules/requirejs/package.json
+74 verbose readDependencies using package.json deps
+75 silly resolved []
+76 verbose about to build /Users/ryan/node_modules/requirejs
+77 info build /Users/ryan/node_modules/requirejs
+78 verbose from cache /Users/ryan/node_modules/requirejs/package.json
+79 verbose linkStuff [ false, false, false, '/Users/ryan/node_modules' ]
+80 info linkStuff requirejs@2.1.1
+81 verbose linkBins requirejs@2.1.1
+82 verbose link bins [ { 'r.js': './bin/r.js' },
+82 verbose link bins   '/Users/ryan/node_modules/.bin',
+82 verbose link bins   false ]
+83 verbose linkMans requirejs@2.1.1
+84 verbose rebuildBundles requirejs@2.1.1
+85 info /Users/ryan/node_modules/requirejs unbuild
+86 verbose from cache /Users/ryan/node_modules/requirejs/package.json
+87 info preuninstall requirejs@2.1.1
+88 info uninstall requirejs@2.1.1
+89 verbose true,/Users/ryan/node_modules,/Users/ryan/node_modules unbuild requirejs@2.1.1
+90 verbose /Users/ryan/node_modules/.bin,[object Object] binRoot
+91 info postuninstall requirejs@2.1.1
+92 error Error: EACCES, symlink '../requirejs/bin/r.js'
+92 error  { [Error: EACCES, symlink '../requirejs/bin/r.js'] errno: 3, code: 'EACCES', path: '../requirejs/bin/r.js' }
+93 error Please try running this command again as root/Administrator.
+94 error System Darwin 10.8.0
+95 error command "node" "/usr/local/bin/npm" "install" "requirejs"
+96 error cwd /Users/ryan/github/plaything/bestcss
+97 error node -v v0.8.6
+98 error npm -v 1.1.48
+99 error path ../requirejs/bin/r.js
+100 error code EACCES
+101 error errno 3
+102 error stack Error: EACCES, symlink '../requirejs/bin/r.js'
+103 verbose exit [ 3, true ]

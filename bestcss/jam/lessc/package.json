@@ -1,0 +1,14 @@
+{
+    "name": "lessc",
+    "version": "1.0.3",
+    "description": "A plugin to compile less files.",
+    "dependencies": {
+        "less": "1.3.x"
+    },
+    "keywords": [
+        "less",
+        "lessc",
+        "css"
+    ],
+    "main": "lessc.js"
+}

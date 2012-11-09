@@ -112,8 +112,10 @@ tag_space.selectAll("rect")
     .attr("y", 20)
     .attr("height",50)
     .attr("width", function(d) {  return x(d.end) - x(d.start); })
-    .attr("fill", "#2d578b");
-
+    .attr("fill", "#2d578b")
+    .on('click', function(d,i){  console.log('click');    $(this).addClass('hover')   })
+    .on('mouseover', function(d,i){ console.log('mo'); $(this).addClass('hover')   })
+    .on('mouseout', function(d,i){  $(this).removeClass('hover')   });
 
 var scrapbook_space = tags.append("g").attr("clip-path", "url(#clip)");
 
