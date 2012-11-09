@@ -1,10 +1,14 @@
-define(function(){
-return {
-    body : {
-        padding : 0,
-        margin : 0
+define({
 
-    }
+body : {
+    padding : 0,
+    margin : 0
+
+},
+
+'.maximize' : {
+    'font-size' : '40px'
 }
+
 });
 
