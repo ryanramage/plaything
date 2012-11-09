@@ -1,2 +1,2 @@
 production :
-	jam compile -i js/app -i domReady -i less  -o jam/require.js;
+	jam compile -i js/app -i domReady  -o jam/require.js;
