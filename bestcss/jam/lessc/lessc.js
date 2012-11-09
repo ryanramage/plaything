@@ -11,12 +11,12 @@ define('lessc', [], function () {
      */
     var compileLess = function (lessSrc, parentRequire, onLoad, config, callback) {
 
-
+        console.log(config);
         onLoad(lessSrc);
         if (!config.isBuild) {
             parentRequire(['less'], function (less) {
                 var lessParser = new less.Parser({
-                    paths: ['.']
+                    paths: ['' + config.baseUrl]
                 });
 
                 lessParser.parse(lessSrc, function (e, css) {
@@ -29,7 +29,7 @@ define('lessc', [], function () {
             require(['./jam/lessc/lessr.js'], function(less_rhino){
                 console.log('gtere');
                 var lessParser = new less_rhino.Parser({
-                    paths: ['.']
+                    paths: ['' + config.dirBaseUrl]
                 });
 
                 console.log(lessParser);
@@ -110,7 +110,8 @@ define('lessc', [], function () {
             // Instead of re-inventing the wheel, let's just conveniently use
             // RequireJS' `text` plugin.
 
-
+            console.log(config.dirBaseUrl);
+            console.log(name);
 
             loadFile(name, parentRequire, function (text) {
                 compileLess(text, parentRequire, onLoad, config, function (e, css) {

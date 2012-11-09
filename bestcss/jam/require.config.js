@@ -1,6 +1,10 @@
 var jam = {
     "packages": [
         {
+            "name": "bootstrap",
+            "location": "jam/bootstrap"
+        },
+        {
             "name": "domReady",
             "location": "jam/domReady",
             "main": "domReady.js"
