@@ -1,7 +1,8 @@
-define('lessc', [], function () {
+define('lessc', ['text', 'jam/lessc/lessr.js'], function (text, lessr) {
     'use strict';
 
     var buildMap = {},
+        dirMap = {},
         // TODO: Find a better way to determine if the current environment is
         //       Node.js or not.
         isNodejs = typeof module != 'undefined';
@@ -11,8 +12,8 @@ define('lessc', [], function () {
      */
     var compileLess = function (lessSrc, parentRequire, onLoad, config, callback) {
 
-        console.log(config);
-        onLoad(lessSrc);
+
+
         if (!config.isBuild) {
             parentRequire(['less'], function (less) {
                 var lessParser = new less.Parser({
@@ -20,22 +21,22 @@ define('lessc', [], function () {
                 });
 
                 lessParser.parse(lessSrc, function (e, css) {
-                    callback(e, css.toCSS({ compress: true }).trim());
+
+
+                    //var temp = css.toCSS({ compress: true }).trim();
+                    var temp = css.toCSS({ compress: true }).trim();
+
+                    callback(e, temp, lessParser);
                 });
             });
         } else {
 
-            console.log('in compile in jam')
             require(['./jam/lessc/lessr.js'], function(less_rhino){
-                console.log('gtere');
                 var lessParser = new less_rhino.Parser({
                     paths: ['' + config.dirBaseUrl]
                 });
 
-                console.log(lessParser);
-
                 lessParser.parse(lessSrc, function (e, css) {
-                    console.log(e, css);
                     callback(e, css.toCSS({ compress: true }).trim());
                 });
             })
@@ -63,14 +64,12 @@ define('lessc', [], function () {
     };
 
     var loadFile = function (name, parentRequire, callback) {
-        if (isNodejs) {
-            var text = fs.readFileSync(name, 'utf-8');
-            callback(text);
-        } else {
-            parentRequire(['text!' + name], function (text) {
+
+
+        text.get(parentRequire.toUrl(name), function(text) {
                 callback(text);
-            });
-        }
+        });
+
     };
 
     var jsEscape = function (content) {
@@ -85,24 +84,48 @@ define('lessc', [], function () {
     return {
 
         write: function (pluginName, moduleName, writeBuild) {
+
+
             if (moduleName in buildMap) {
-                var text = jsEscape(buildMap[moduleName]);
-                writeBuild(
-                    ";(function () {" +
-                        "var theStyle = '" + text + "';" +
-                        "var styleTag = document.createElement('style');" +
-                        "styleTag.type = 'text/css';" +
-                        "if (styleTag.styleSheet) {" +
-                            "styleTag.styleSheet.cssText = theStyle;" +
-                        "} else {" +
-                            "styleTag.appendChild(document.createTextNode(theStyle));" +
-                        "}" +
-                        "document.getElementsByTagName('head')[0].appendChild(styleTag);" +
-                        "define('" + pluginName + "!" + moduleName + "', function () {" +
-                            "return theStyle;" +
-                        "});" +
-                    "}());"
-                );
+
+
+                var dirBaseUrl = dirMap[moduleName];
+
+                var lessParser = new lessr.Parser({
+                    paths: ['' + dirBaseUrl]
+                });
+                lessParser.parse(buildMap[moduleName], function (e, css) {
+
+
+
+                    var result = css.toCSS({ compress: true }).trim();
+                    var text = jsEscape(result);
+                    writeBuild(
+                        ";(function () {" +
+                            "var theStyle = '" + text + "';" +
+                            "var styleTag = document.createElement('style');" +
+                            "styleTag.type = 'text/css';" +
+                            "if (styleTag.styleSheet) {" +
+                                "styleTag.styleSheet.cssText = theStyle;" +
+                            "} else {" +
+                                "styleTag.appendChild(document.createTextNode(theStyle));" +
+                            "}" +
+                            "document.getElementsByTagName('head')[0].appendChild(styleTag);" +
+                            "define('" + pluginName + "!" + moduleName + "', function () {" +
+                                "return theStyle;" +
+                            "});" +
+                        "}());"
+                    );
+
+                });
+
+
+
+
+
+
+
+
             }
         },
 
@@ -110,21 +133,23 @@ define('lessc', [], function () {
             // Instead of re-inventing the wheel, let's just conveniently use
             // RequireJS' `text` plugin.
 
-            console.log(config.dirBaseUrl);
-            console.log(name);
 
             loadFile(name, parentRequire, function (text) {
-                compileLess(text, parentRequire, onLoad, config, function (e, css) {
+                if (config.isBuild) {
+                    buildMap[name] = text;
+                    dirMap[name] = config.dirBaseUrl;
+                    return onLoad(text);
+                }
+
+
+                compileLess(text, parentRequire, onLoad, config, function (e, css, lessParser) {
                     if (e) {
                         onLoad.error(e);
                         return;
                     } else {
-                        if (config.isBuild) {
-                            buildMap[name] = css;
-                        }
-
-                        if (!isNodejs) {
+                        if (!config.isBuild) {
                             outputStylesheet(css);
+                            onLoad();
                         }
                     }
                 });
