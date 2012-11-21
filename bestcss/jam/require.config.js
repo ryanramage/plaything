@@ -15,11 +15,6 @@ var jam = {
             "main": "lib/index.js"
         },
         {
-            "name": "less",
-            "location": "jam/less",
-            "main": "./lib/index.js"
-        },
-        {
             "name": "lessc",
             "location": "jam/lessc",
             "main": "lessc.js"

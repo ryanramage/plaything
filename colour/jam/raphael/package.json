@@ -1,0 +1,11 @@
+{
+    "name": "raphael",
+    "version": "2.0.1",
+    "description": "JavaScript Vector Library",
+    "homepage": "http://raphaeljs.com/",
+    "main": "raphael.amd.js",
+    "jam": {
+        "main": "raphael.amd.js"
+    },
+    "github": "https://github.com/DmitryBaranovskiy/raphael"
+}
