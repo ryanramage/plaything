@@ -3,7 +3,15 @@
  * Date: 12-11-20
  * Time: 9:38 PM
  */
-define(['jquery', 'director', 'jscss', 'raphael', 'onecolor', 'lorem'], function ($, director, jscss, Raphael, onecolor, lorem) {
+define([
+    'jquery',
+    'director',
+    'jscss',
+    'raphael',
+    'onecolor',
+    'lorem',
+    'hbt!section'
+], function ($, director, jscss, Raphael, onecolor, lorem, section_t) {
 
 
     var exports = {},
@@ -15,6 +23,9 @@ define(['jquery', 'director', 'jscss', 'raphael', 'onecolor', 'lorem'], function
         cssObj = {
            '.section' : {
                'padding' : '60px 0 100px'
+           },
+           '.border' : {
+               'height' : '8px'
            },
            '.container' : {},
            '.color1': {},
@@ -39,7 +50,6 @@ define(['jquery', 'director', 'jscss', 'raphael', 'onecolor', 'lorem'], function
     }
 
     function textColor(bgColor) {
-        console.log(bgColor.red());
         var r = bgColor.red() * 255,
             g = bgColor.green() * 255,
             b = bgColor.blue() * 255;
@@ -55,6 +65,14 @@ define(['jquery', 'director', 'jscss', 'raphael', 'onecolor', 'lorem'], function
         } else {
             return color.lightness(-.85, true);
         }
+    }
+
+    function centreColour(color) {
+        var to_change = .12;
+        if (color.lightness() > 0.8) {
+            to_change = -.12;
+        }
+        return color.lightness(to_change, true);
     }
 
     function circle() {
@@ -95,7 +113,7 @@ define(['jquery', 'director', 'jscss', 'raphael', 'onecolor', 'lorem'], function
 
 
 
-            var center = myColor.lightness(.12, true);
+            var center = centreColour(myColor);
 
             cssObj['.color' + i]['color'] =  text;
             cssObj['.color' + i]['text-shadow'] = '0px 1px 3px ' + text_shadow.cssa();
@@ -104,8 +122,63 @@ define(['jquery', 'director', 'jscss', 'raphael', 'onecolor', 'lorem'], function
             cssObj['.color' + i]['background-position'] = 'center bottom';
             cssObj['.color' + i]['background-repeat'] = 'no-repeat';
             //cssObj['.color' + i]['background'] = '-webkit-radial-gradient(circle, #'+ colour + ' 80%, rgba(80%,60%,60%,.4));';
-            cssObj['.color' + i]['background'] = '-webkit-radial-gradient(circle,  ' + center.cssa() + ', '+ myColor.cssa() + ');';
+            cssObj['.color' + i]['background'] = '-webkit-radial-gradient(circle,  ' + center.cssa() + ' 10px, '+ myColor.cssa() + ');';
         });
+    }
+
+
+    function drawSectionBorder(colours) {
+        var borders = [];
+        var current = null;
+        colours.forEach(function(colour, i){
+            if (!current) {
+                current = {
+                    from_colour : new onecolor('#' + colour),
+                    from : i
+                }
+            } else {
+                current.to_colour = new onecolor('#' + colour);
+                current.to = i;
+                borders.push(current);
+                current = {
+                    from_colour : new onecolor('#' + colour),
+                    from : i
+                };
+            }
+        });
+
+        doBorders(borders);
+    }
+
+
+    function doBorders(borders) {
+        borders.forEach(function(border){
+            var id = '#section_border_' + border.from + '-' + border.to;
+            var canvas = document.getElementById('play');
+            if (canvas.getContext) {
+                var ctx = canvas.getContext("2d");
+
+                ctx.fillStyle = border.from_colour.cssa();
+                ctx.fillRect (0, 0, 16, 8);
+
+                ctx.fillStyle = border.to_colour.cssa();
+                ctx.fillRect (16, 0, 16, 8);
+                cssObj[id] = {};
+                cssObj[id]['background-image'] =  "url(" + canvas.toDataURL("image/png")+ ")" ;
+            }
+
+        })
+    }
+
+
+    function renderTemplate(colours) {
+        colours.forEach(function(colour, i) {
+            $('.experiment').append(section_t({
+                i : i,
+                j : i + 1
+            }));
+        });
+        $('p').text(lorem.defaults().text);
     }
 
 
@@ -117,7 +190,11 @@ define(['jquery', 'director', 'jscss', 'raphael', 'onecolor', 'lorem'], function
                 var colours = result[0].colors;
 
                 setSectionBG(colours);
+                drawSectionBorder(colours);
                 jscss.embed(jscss.compile(cssObj));
+
+                renderTemplate(colours);
+
 
             }
         })
@@ -128,12 +205,14 @@ define(['jquery', 'director', 'jscss', 'raphael', 'onecolor', 'lorem'], function
         $.getJSON('http://www.colourlovers.com/api/palette/'+ colour +'?format=json&jsonCallback=?', function(result){
             if (result && result[0]) {
                 var colours = result[0].colors;
-                console.log(colours);
                 setSectionBG(colours);
+                drawSectionBorder(colours);
                 //  cssObj['.section']['background-color'] = '#' + colours[0];
 
 
                 jscss.embed(jscss.compile(cssObj));
+                renderTemplate(colours);
+
 
             }
         })
@@ -142,7 +221,7 @@ define(['jquery', 'director', 'jscss', 'raphael', 'onecolor', 'lorem'], function
 
 
     exports.on_dom_ready = function() {
-        $('p').text(lorem.defaults().text);
+
 
         router.init('/');
 

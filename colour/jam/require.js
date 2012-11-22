@@ -2058,6 +2058,16 @@ var jam = {
             "main": "eve.js"
         },
         {
+            "name": "handlebars",
+            "location": "jam/handlebars",
+            "main": "handlebars.js"
+        },
+        {
+            "name": "hbt",
+            "location": "jam/hbt",
+            "main": "hbt.js"
+        },
+        {
             "name": "jquery",
             "location": "jam/jquery",
             "main": "jquery.js"
@@ -2081,6 +2091,11 @@ var jam = {
             "name": "raphael",
             "location": "jam/raphael",
             "main": "raphael.amd.js"
+        },
+        {
+            "name": "text",
+            "location": "jam/text",
+            "main": "text.js"
         }
     ],
     "version": "0.2.11",
