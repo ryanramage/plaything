@@ -1,0 +1,15 @@
+{
+  "name": "sweeten",
+  "version": "0.0.1",
+  "description": "An AMD loader plugin for Sweet.js",
+  "jam": {
+    "dependencies": {
+      "sweet.js": ">=0.1.1"
+    },
+    "main" : "src/sweeten.js",
+    "include": [
+        "src",
+        "README.md"
+    ]
+  }
+}

@@ -10,8 +10,10 @@ define([
     'raphael',
     'onecolor',
     'lorem',
-    'hbt!section'
-], function ($, director, jscss, Raphael, onecolor, lorem, section_t) {
+    'hbt!section',
+    'text!img/swim.path',
+    'sweeten!js/test'
+], function ($, director, jscss, Raphael, onecolor, lorem, section_t, swim, test) {
 
 
     var exports = {},
@@ -177,6 +179,19 @@ define([
                 i : i,
                 j : i + 1
             }));
+
+
+
+            var iconColour = new onecolor('#' + colour);
+            if (i < colours.length - 2) {
+                iconColour = new onecolor('#' + colours[i + 1]);
+            }
+
+            var paper = Raphael('icon_' + i, 32,32);
+            var p  = paper.path(swim).attr({fill: iconColour.cssa(), stroke: "none"});
+            var box = p.getBBox(); //(x,y,x2,y2,width,height)
+            paper.setViewBox(box.x, box.y, box.width, box.height);
+
         });
         $('p').text(lorem.defaults().text);
     }

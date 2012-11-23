@@ -11,6 +11,16 @@ var jam = {
             "main": "domReady.js"
         },
         {
+            "name": "escodegen",
+            "location": "jam/escodegen",
+            "main": "escodegen.js"
+        },
+        {
+            "name": "esprima",
+            "location": "jam/esprima",
+            "main": "esprima.js"
+        },
+        {
             "name": "eve",
             "location": "jam/eve",
             "main": "eve.js"
@@ -51,9 +61,29 @@ var jam = {
             "main": "raphael.amd.js"
         },
         {
+            "name": "sweet",
+            "location": "jam/sweet",
+            "main": "src/sweet.js"
+        },
+        {
+            "name": "sweet.js",
+            "location": "jam/sweet.js",
+            "main": "src/sweet.js"
+        },
+        {
+            "name": "sweeten",
+            "location": "jam/sweeten",
+            "main": "src/sweeten.js"
+        },
+        {
             "name": "text",
             "location": "jam/text",
             "main": "text.js"
+        },
+        {
+            "name": "underscore",
+            "location": "jam/underscore",
+            "main": "underscore.js"
         }
     ],
     "version": "0.2.11",
