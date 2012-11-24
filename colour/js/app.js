@@ -7,14 +7,16 @@ define([
     'jquery',
     'director',
     'jscss',
-    'raphael',
+    'raphael-amd',
     'onecolor',
     'lorem',
     'hbt!section',
     'text!img/swim.path',
-    'sweeten!js/test'
+    "pathicon!img/out?id=sweet,width=64,height=64,fill=#ccc"
 ], function ($, director, jscss, Raphael, onecolor, lorem, section_t, swim, test) {
 
+
+    console.log('runninf', test);
 
     var exports = {},
         routes = {
@@ -37,7 +39,6 @@ define([
            '.color5': {},
            '.color0': {},
             p : {
-                'font-family': '"Averia"',
                 'font-weight': 'bold',
                 'font-style': 'normal'
             }

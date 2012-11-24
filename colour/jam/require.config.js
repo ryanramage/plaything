@@ -56,8 +56,23 @@ var jam = {
             "main": "one-color-all.js"
         },
         {
+            "name": "pathicon",
+            "location": "jam/pathicon",
+            "main": "pathicon.js"
+        },
+        {
+            "name": "pcon",
+            "location": "jam/pcon",
+            "main": "pcon.js"
+        },
+        {
             "name": "raphael",
             "location": "jam/raphael",
+            "main": "raphael.amd.js"
+        },
+        {
+            "name": "raphael-amd",
+            "location": "jam/raphael-amd",
             "main": "raphael.amd.js"
         },
         {
@@ -86,7 +101,7 @@ var jam = {
             "main": "underscore.js"
         }
     ],
-    "version": "0.2.11",
+    "version": "0.2.12",
     "shim": {
         "director": {
             "exports": "Router"
