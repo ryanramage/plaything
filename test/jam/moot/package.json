@@ -1,0 +1,13 @@
+{
+	"name":"moot",
+	"version" : "0.0.1",
+	"description" : "moot stuff",
+	"main" : "moot.js",
+	"jam" : {
+		"extra_packages" : {
+			"depend": {
+				"main": "depend.js"
+			}
+		}
+	}
+}
