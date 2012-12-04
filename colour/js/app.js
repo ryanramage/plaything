@@ -7,16 +7,13 @@ define([
     'jquery',
     'director',
     'jscss',
-    'raphael-amd',
+    'raphael',
     'onecolor',
-    'lorem',
     'hbt!section',
     'text!img/swim.path',
-    "pathicon!img/out?id=sweet,width=64,height=64,fill=#ccc"
-], function ($, director, jscss, Raphael, onecolor, lorem, section_t, swim, test) {
+    "pathicon!img/sheet.json"
+], function ($, director, jscss, Raphael, onecolor,  section_t, swim, test) {
 
-
-    console.log('runninf', test);
 
     var exports = {},
         routes = {
@@ -49,7 +46,7 @@ define([
 
 
     function index() {
-
+        jscss.embed(jscss.compile(cssObj));
     }
 
     function textColor(bgColor) {
@@ -194,7 +191,7 @@ define([
             paper.setViewBox(box.x, box.y, box.width, box.height);
 
         });
-        $('p').text(lorem.defaults().text);
+
     }
 
 
