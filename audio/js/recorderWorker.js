@@ -1,6 +1,8 @@
 var recLength = 0,
   recBuffersL = [],
   recBuffersR = [],
+  peakL = 0,
+  peakR = 0,
   sampleRate;
 
 this.onmessage = function(e){
@@ -48,6 +50,15 @@ function getBuffer() {
   buffers.push( mergeBuffers(recBuffersL, recLength) );
   buffers.push( mergeBuffers(recBuffersR, recLength) );
   this.postMessage(buffers);
+}
+
+function getPeakAndClear() {
+  var peak = {
+    left: peakL,
+    right: peakR
+  };
+  this.postMessage(peak);
+  peakL = peakR = 0;
 }
 
 function clear(){
