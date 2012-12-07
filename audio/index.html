@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Audio</title>
+
+</head>
+<body>
+
+<button class="btn start">Start</button>
+<button class="btn stop">Stop</button>
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="jam/require.js"></script>
+<script>
+  require(['js/app', 'domReady', 'js/recorder.js'], function (app, domReady) {
+
+        domReady(app.on_dom_ready);
+
+  });
+</script>
+</body>
+</html>
