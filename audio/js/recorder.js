@@ -20,9 +20,6 @@
     this.node.onaudioprocess = function(e){
 
       if (!recording) return;
-
-      console.log(JSON.stringify(e.inputBuffer.getChannelData(0)));
-
       worker.postMessage({
         command: 'record',
         buffer: [

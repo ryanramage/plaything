@@ -2,12 +2,25 @@
 <html>
 <head>
     <title>Audio</title>
-
+	<style>
+		body { font: 14pt Arial, sans-serif; background: lightgrey; }
+		select { font: 14pt Arial, sans-serif; }
+		body { text-align: center; margin-top: 12pt;}
+		canvas { display: inline-block; background: #202020; box-shadow: 0px 0px 10px blue;}
+		#record.recording { background: red;
+		background: -webkit-radial-gradient(center, ellipse cover, #ff0000 0%,lightgrey 75%,lightgrey 100%,#7db9e8 100%); }
+	</style>
 </head>
 <body>
 
 <button class="btn start">Start</button>
 <button class="btn stop">Stop</button>
+
+
+<canvas id="analyser" width="768" height="200"></canvas>
+
+
+
 <!-- Le javascript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
