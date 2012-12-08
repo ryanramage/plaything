@@ -71,7 +71,8 @@ define(['jquery', 'couchr', 'js/analyserChart'], function($, couchr, analyserCha
 	    zeroGain.connect( audioContext.destination );
 
 	    chart.start(analyserNode);
-
+	    audioRecorder.clear();
+        audioRecorder.record();
 	    // export a wav every second, so we can send it using websockets
 	    intervalKey = setInterval(saveSection, 10000);
 	    
@@ -88,7 +89,6 @@ define(['jquery', 'couchr', 'js/analyserChart'], function($, couchr, analyserCha
             oReq.onreadystatechange = function() {
            		if (oReq.readyState === 2) {
            			doc._rev = oReq.getResponseHeader('ETag');
-           			console.log(doc._rev);
            		}
             };
 			oReq.open("POST", '_db/' + doc._id);
@@ -104,8 +104,9 @@ define(['jquery', 'couchr', 'js/analyserChart'], function($, couchr, analyserCha
 
 	function stopRecording() {
 		audioRecorder.stop();
-		mediaStreamSource.disconnect();
+		//mediaStreamSource.disconnect();
 		clearInterval(intervalKey);
+		chart.done();
 	}
     var onFailSoHard = function(e) {
 		console.log('Reeeejected!', e);

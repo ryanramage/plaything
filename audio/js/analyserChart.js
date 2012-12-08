@@ -44,7 +44,10 @@ define([], function(){
 	}
 
 	chart.prototype.done = function() {
-		clearInterval(this.timer);
+		this.context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+		window.webkitCancelAnimationFrame( this.rafID );
+		this.rafID = null;
+		this.analyserNode = null;
 	}
 
 	return  chart;
