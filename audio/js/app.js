@@ -35,15 +35,7 @@ define(['jquery', 'couchr', 'js/analyserChart'], function($, couchr, analyserCha
 
 
 	audioContext = getAudioContext();
-	doc = {
-		_id: new Date().getTime() + '',
-		type : 'recording'
-	}
 
-	couchr.post('_db', doc, function(err, rest) {
-		if (err) return console.log('could not post doc');
-		doc._rev = rest.rev;
-	}) 
 
 
 
@@ -81,18 +73,7 @@ define(['jquery', 'couchr', 'js/analyserChart'], function($, couchr, analyserCha
 
 	function saveSection() {
        audioRecorder.exportWAV(function(blob) {
-           audioRecorder.clear();
-            var form = new FormData();
-            form.append('_attachments', blob, att_id++);
-            form.append("_rev", doc._rev);
-            var oReq = new XMLHttpRequest();
-            oReq.onreadystatechange = function() {
-           		if (oReq.readyState === 2) {
-           			doc._rev = oReq.getResponseHeader('ETag');
-           		}
-            };
-			oReq.open("POST", '_db/' + doc._id);
-			oReq.send(form);
+
        });		
 	}
 

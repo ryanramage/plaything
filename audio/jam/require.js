@@ -2063,6 +2063,21 @@ var jam = {
             "main": "jquery.js"
         },
         {
+            "name": "md5",
+            "location": "jam/md5",
+            "main": "md5.js"
+        },
+        {
+            "name": "pouchdb",
+            "location": "jam/pouchdb",
+            "main": "pouch.amd.alpha.js"
+        },
+        {
+            "name": "simple-uuid",
+            "location": "jam/simple-uuid",
+            "main": "uuid.js"
+        },
+        {
             "name": "text",
             "location": "jam/text",
             "main": "text.js"
