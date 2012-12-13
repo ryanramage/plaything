@@ -1,4 +1,4 @@
-define(['jquery', 'couchr', 'js/analyserChart'], function($, couchr, analyserChart){
+define(['jquery', 'couchr', 'js/analyserChart', 'js/player'], function($, couchr, analyserChart, player){
 
 	var mediaStreamSource,
 		analyserNode,
@@ -11,6 +11,7 @@ define(['jquery', 'couchr', 'js/analyserChart'], function($, couchr, analyserCha
 	    chart,
 		doc,
 		att_id = 1,
+		storageSize = 20000*1024,
 		intervalKey;
    	var getUserMedia = function(options, success, error) {
    		var getUserMedia =
@@ -29,6 +30,8 @@ define(['jquery', 'couchr', 'js/analyserChart'], function($, couchr, analyserCha
     	return new (window.AudioContext || window.webkitAudioContext);
     }
 
+	window.requestFileSystem  = window.requestFileSystem || window.webkitRequestFileSystem;
+
 
 	var canvas = document.getElementById("analyser");
 	chart = new analyserChart(canvas);
@@ -39,7 +42,7 @@ define(['jquery', 'couchr', 'js/analyserChart'], function($, couchr, analyserCha
 
 
 
-	function gotStream(stream) {
+	function gotStream(stream, fileWriter) {
 	    inputPoint = audioContext.createGainNode();
 
 	    // Create an AudioNode from the stream.
@@ -53,34 +56,134 @@ define(['jquery', 'couchr', 'js/analyserChart'], function($, couchr, analyserCha
 	    analyserNode.fftSize = 2048;
 	    inputPoint.connect( analyserNode );
 
+	    var first = true;
 	    audioRecorder = new Recorder( inputPoint, {
-			workerPath: 'js/recorderWorker.js'
+			workerPath: 'js/recorderWorker.js',
+			onDataReady : function(data){		
+				
+				var b = new Blob([data], {  });
+				try {
+					if (first) {
+						console.log(data);	
+				    	fileWriter.write(b);
+				    	first=false;
+				    }
+				} catch(ee) {
+					console.log(ee);
+				}
+			}
 		});
 
 	    zeroGain = audioContext.createGainNode();
 	    zeroGain.gain.value = 0.0;
 	    inputPoint.connect( zeroGain );
 	    //zeroGain.connect( audioContext.destination );
-	    console.log('start', new Date().getTime());
 	    chart.start(analyserNode);
-	    audioRecorder.clear();
-        audioRecorder.record();
-	    // export a wav every second, so we can send it using websockets
-	    intervalKey = setInterval(saveSection, 1000);
-	    
+        audioRecorder.record();	    
 	}
 
-
-	function saveSection() {
-	   console.log('section', new Date().getTime());
-       audioRecorder.getBuffer(function(buffer) {
-       		console.log(buffer);
-       });		
+	function fwDone(evt) {
+		console.log("Write completed.", evt);
+		//console.log(fileWriter.position, fileWriter.length);
 	}
+	function fwError(evt) {
+		console.log("Write failed:" + evt);
+	}
+	function onInitFs(fs) {
+	  var filename = new Date().getTime() + '.spx' ;
+	  console.log(filename, 'writing');
+	  fs.root.getFile(filename, {create: true}, function(fileEntry) {
+
+	    // Create a FileWriter object for our FileEntry (log.txt).
+	    fileEntry.createWriter(function(fileWriter) {
+
+		  fileWriter.onwrite = fwDone;
+		  fileWriter.onerror = fwError;
+	      // Create a new Blob and write it to log.txt.
+	      getUserMedia({audio: true}, function(stream) {
+	      	  gotStream(stream, fileWriter);
+	      }, onFailSoHard);	
+	    }, errorHandler);
+	  }, errorHandler);
+
+			
+	}
+	function toArray(list) {
+	  return Array.prototype.slice.call(list || [], 0);
+	}
+
+	function listResults(entries) {
+	  entries.forEach(function(entry, i) {
+	  	$entry = $('<li>' +  entry.name  + '<li>');
+	  	$entry.on('click', function(){  
+	  		entry.file(function(file){
+	  			player.playLocalFile(file);  
+	  		})
+	  	});
+	  	$('#previous_entries').append($entry)
+	  });
+
+	}
+
+	function listFs(fs) {
+	  var dirReader = fs.root.createReader();
+	  var entries = [];
+
+	  // Call the reader.readEntries() until no more results are returned.
+	  var readEntries = function() {
+	     dirReader.readEntries (function(results) {
+	      if (!results.length) {
+	        listResults(entries.sort());
+	      } else {
+	        entries = entries.concat(toArray(results));
+	        readEntries();
+	      }
+	    }, errorHandler);
+	  };
+
+	  readEntries(); // Start reading dirs.		
+	}
+
+	function errorHandler(e) {
+	  var msg = '';
+
+	  switch (e.code) {
+	    case FileError.QUOTA_EXCEEDED_ERR:
+	      msg = 'QUOTA_EXCEEDED_ERR';
+	      break;
+	    case FileError.NOT_FOUND_ERR:
+	      msg = 'NOT_FOUND_ERR';
+	      break;
+	    case FileError.SECURITY_ERR:
+	      msg = 'SECURITY_ERR';
+	      break;
+	    case FileError.INVALID_MODIFICATION_ERR:
+	      msg = 'INVALID_MODIFICATION_ERR';
+	      break;
+	    case FileError.INVALID_STATE_ERR:
+	      msg = 'INVALID_STATE_ERR';
+	      break;
+	    default:
+	      msg = 'Unknown Error';
+	      break;
+	  };
+
+	  console.log('Error: ' + msg);
+	}	
+
+
+	function listRecordings() {
+		window.requestFileSystem(PERSISTENT, storageSize, listFs, errorHandler);
+	}
+	listRecordings();
 
 
 	function startRecording() {
-		getUserMedia({audio: true}, gotStream, onFailSoHard);
+		window.webkitStorageInfo.requestQuota(PERSISTENT, storageSize, function(grantedBytes) {
+		  window.requestFileSystem(PERSISTENT, grantedBytes, onInitFs, errorHandler);
+		}, function(e) {
+		  console.log('Error', e);
+		});
 	}
 
 
