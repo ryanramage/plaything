@@ -26,10 +26,10 @@
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="jam/require.js"></script>
 <script>
-  require(['js/app', 'domReady', 'js/recorder.js', 'js/speex.js', 'js/xaudio.js'], function (app, domReady) {
-
-        domReady(app.on_dom_ready);
-
+  require(['domReady', 'js/speex.js', 'js/xaudio.js'], function (domReady) {
+  		require(['js/recorder.js', 'js/app'], function(recoder, app){
+			domReady(app.on_dom_ready);
+  		});
   });
 </script>
 </body>

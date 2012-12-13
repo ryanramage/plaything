@@ -60,20 +60,21 @@ define(['jquery', 'couchr', 'js/analyserChart'], function($, couchr, analyserCha
 	    zeroGain = audioContext.createGainNode();
 	    zeroGain.gain.value = 0.0;
 	    inputPoint.connect( zeroGain );
-	    zeroGain.connect( audioContext.destination );
-
+	    //zeroGain.connect( audioContext.destination );
+	    console.log('start', new Date().getTime());
 	    chart.start(analyserNode);
 	    audioRecorder.clear();
         audioRecorder.record();
 	    // export a wav every second, so we can send it using websockets
-	    intervalKey = setInterval(saveSection, 10000);
+	    intervalKey = setInterval(saveSection, 1000);
 	    
 	}
 
 
 	function saveSection() {
-       audioRecorder.exportWAV(function(blob) {
-
+	   console.log('section', new Date().getTime());
+       audioRecorder.getBuffer(function(buffer) {
+       		console.log(buffer);
        });		
 	}
 
