@@ -12,6 +12,7 @@ define(['jquery', 'couchr', 'js/analyserChart', 'js/player'], function($, couchr
 		doc,
 		att_id = 1,
 		storageSize = 20000*1024,
+		writeBuffer = [],
 		intervalKey;
    	var getUserMedia = function(options, success, error) {
    		var getUserMedia =
@@ -40,7 +41,17 @@ define(['jquery', 'couchr', 'js/analyserChart', 'js/player'], function($, couchr
 	audioContext = getAudioContext();
 
 
+	function nextWrite(fileWriter) {
+		console.log(writeBuffer.length);
+		if (writeBuffer.length > 0) {
+			//var data = writeBuffer.shift();
+			var b = new Blob(writeBuffer, {  });
+			writeBuffer = [];
+			console.log(fileWriter.position, writeBuffer.length);
+			fileWriter.write(b);
 
+		}
+	}
 
 	function gotStream(stream, fileWriter) {
 	    inputPoint = audioContext.createGainNode();
@@ -60,16 +71,10 @@ define(['jquery', 'couchr', 'js/analyserChart', 'js/player'], function($, couchr
 	    audioRecorder = new Recorder( inputPoint, {
 			workerPath: 'js/recorderWorker.js',
 			onDataReady : function(data){		
-				
-				var b = new Blob([data], {  });
-				try {
-					if (first) {
-						console.log(data);	
-				    	fileWriter.write(b);
-				    	first=false;
-				    }
-				} catch(ee) {
-					console.log(ee);
+				writeBuffer.push(data);
+				if (first) {
+					nextWrite(fileWriter);
+					first=false;
 				}
 			}
 		});
@@ -82,13 +87,7 @@ define(['jquery', 'couchr', 'js/analyserChart', 'js/player'], function($, couchr
         audioRecorder.record();	    
 	}
 
-	function fwDone(evt) {
-		console.log("Write completed.", evt);
-		//console.log(fileWriter.position, fileWriter.length);
-	}
-	function fwError(evt) {
-		console.log("Write failed:" + evt);
-	}
+
 	function onInitFs(fs) {
 	  var filename = new Date().getTime() + '.spx' ;
 	  console.log(filename, 'writing');
@@ -96,9 +95,17 @@ define(['jquery', 'couchr', 'js/analyserChart', 'js/player'], function($, couchr
 
 	    // Create a FileWriter object for our FileEntry (log.txt).
 	    fileEntry.createWriter(function(fileWriter) {
+		  fileWriter.onwrite = 	function (evt) {
+				console.log('write fn',evt);
+				setTimeout(function(){
+					nextWrite(fileWriter);
+				}, 1);
+				
+		  };
+		  fileWriter.onerror = 	function (evt) {
+			console.log("Write failed:" + evt);
+		  };
 
-		  fileWriter.onwrite = fwDone;
-		  fileWriter.onerror = fwError;
 	      // Create a new Blob and write it to log.txt.
 	      getUserMedia({audio: true}, function(stream) {
 	      	  gotStream(stream, fileWriter);

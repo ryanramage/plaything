@@ -22,6 +22,7 @@
     var encoded = codec.encode(samples);  
     if (encoded) {
       if (cb) {
+        console.log('data ready', new Date().getTime());
         cb(encoded);
       }
     }

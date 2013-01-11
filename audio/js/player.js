@@ -10,12 +10,16 @@ define([], function(){
 
 
 	function playLocalFile(file) {
-		console.log('play!!');
+		console.log('play!!', file);
 
-		var sink = new XAudioServer(1, 8000, 320, 512, function (samplesRequested) {}, 0),
+		var sink = new XAudioServer(1, 8000, 320, 1024, function (samplesRequested) {
+			console.log('out of samples', samplesRequested)
+		}, 0, function() {
+			console.log('failed');
+		}),
 			codec = new Speex({ quality: 6 }),
 			reader = new FileReader(),
-			read_length = 56,
+			read_length = 5120,
 			current_position = 0;
 
 		var loadNext = function() {
@@ -23,6 +27,11 @@ define([], function(){
 		    var blob = file.slice(0, current_position);  // mimetype is optional
 		    reader.readAsArrayBuffer(blob);
 		}
+
+		reader.onerror = function(err) {
+			console.log('loading error: ', err);
+		}
+
 
 	    reader.onload = function(e) {
 	      var raw = e.target.result; // arrayBuffer containing bytes 
